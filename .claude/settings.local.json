@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for cmd:*)",
+      "Bash(do if:*)",
+      "Bash(then echo:*)",
+      "Bash(else echo:*)",
+      "Bash(fi)",
+      "Bash(command -v gh)",
+      "Bash(gh auth:*)",
+      "Bash(command -v netlify)",
+      "Bash(netlify status:*)",
+      "Bash(command -v vercel)",
+      "Bash(vercel whoami:*)",
+      "Bash(bun --version)",
+      "Bash(bun x:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}
+# Reglas de Respaldo de Modelos
+- Si la API de OpenRouter devuelve un error 400 por modelo agotado, deprecado o no válido, cambia automáticamente la variable de entorno del modelo a una alternativa activa (por ejemplo, alternar entre `qwen/qwen-2.5-72b-instruct` y otro ID disponible).
+- Notifica al usuario en la terminal antes de aplicar el cambio de respaldo.

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparador de Envíos PY — AFU, ZOE, Lucero del Este, Movil Express</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-20">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-md shadow-indigo-200">📦</div>
+          <div>
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight">Comparador de Envíos PY</h1>
+            <p class="text-xs text-slate-500">Tarifas de encomiendas entre las principales ciudades de Paraguay</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-600">
+          4 empresas &middot; precios en guaraníes (₲)
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+
+    <!-- Estadísticas -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ciudades disponibles</p>
+        <p id="statCities" class="text-2xl font-bold text-indigo-600 mt-1">--</p>
+        <p id="statTotal" class="text-xs text-slate-400 mt-1"></p>
+      </div>
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Más económicas en</p>
+        <p id="statTopCompany" class="text-2xl font-bold text-emerald-600 mt-1">--</p>
+        <p id="statTopCount" class="text-xs text-slate-400 mt-1"></p>
+      </div>
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tarifa más baja</p>
+        <p id="statMinPrice" class="text-2xl font-bold text-rose-600 mt-1">--</p>
+        <p class="text-xs text-slate-400 mt-1">paquete estándar</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Empresas comparadas</p>
+        <p class="text-2xl font-bold text-slate-800 mt-1">4</p>
+        <p class="text-xs text-slate-400 mt-1">AFU, ZOE, Lucero del Este, Movil Express</p>
+      </div>
+    </div>
+
+    <!-- Buscador -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+      <div class="relative max-w-xl">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
+        <input
+          type="search"
+          id="search"
+          placeholder="Buscar ciudad (ej. Asunción, Ciudad del Este, Encarnación...)"
+          class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+        />
+      </div>
+      <p class="text-xs text-slate-400 mt-3">Escribe para filtrar ciudades al instante. Funciona en celular y PC.</p>
+    </div>
+
+    <!-- Vista escritorio: tabla -->
+    <div id="desktopView" class="hidden md:block overflow-x-auto">
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="px-6 py-4 font-semibold text-slate-600">Ciudad</th>
+              <th class="px-6 py-4 font-semibold text-slate-600">AFU</th>
+              <th class="px-6 py-4 font-semibold text-slate-600">ZOE</th>
+              <th class="px-6 py-4 font-semibold text-slate-600">Lucero del Este</th>
+              <th class="px-6 py-4 font-semibold text-slate-600">Movil Express</th>
+              <th class="px-6 py-4 font-semibold text-slate-600">Mejor opción</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Vista móvil: tarjetas -->
+    <div id="mobileView" class="block md:hidden grid gap-3"></div>
+
+    <!-- Estado vacío -->
+    <div id="emptyState" class="hidden flex flex-col items-center justify-center py-16 text-center">
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-2xl mb-3">🔍</div>
+      <h3 class="text-lg font-bold text-slate-900 mb-1">No se encontraron ciudades</h3>
+      <p class="text-slate-500 text-sm">Intenta con otro nombre de ciudad.</p>
+    </div>
+
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <p class="text-xs text-slate-400 text-center">
+        Tarifas referenciales para paquete estándar (1-2 kg). Pueden variar según peso, dimensiones y zona.
+        Consulta directamente con cada empresa para obtener cotizaciones oficiales.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const COMPANIES = [
+      { id: 'afu', name: 'AFU' },
+      { id: 'zoe', name: 'ZOE' },
+      { id: 'lucero', name: 'Lucero del Este' },
+      { id: 'movil', name: 'Movil Express' }
+    ];
+
+    // Base de datos de precios en guaraníes (₲)
+    // null = la empresa no opera en esa ciudad
+    const RATES = [
+      { city: 'Areguá', afu: null, zoe: 40000, lucero: 40000, movil: 30000 },
+      { city: 'Asunción', afu: 20000, zoe: 30000, lucero: 30000, movil: 20000 },
+      { city: 'Capiatá', afu: 35000, zoe: 30000, lucero: 40000, movil: 30000 },
+      { city: 'Chaco\'i', afu: null, zoe: null, lucero: null, movil: 30000 },
+      { city: 'Fernando de la Mora', afu: 20000, zoe: 25000, lucero: 35000, movil: 20000 },
+      { city: 'Guarambaré', afu: null, zoe: 40000, lucero: 40000, movil: 35000 },
+      { city: 'Itá', afu: null, zoe: 50000, lucero: 40000, movil: 45000 },
+      { city: 'Itauguá', afu: null, zoe: 50000, lucero: 40000, movil: 40000 },
+      { city: 'J. Augusto Saldívar', afu: null, zoe: 40000, lucero: 40000, movil: 35000 },
+      { city: 'Lambaré', afu: 20000, zoe: 30000, lucero: 30000, movil: 25000 },
+      { city: 'Limpio', afu: 35000, zoe: 50000, lucero: 40000, movil: 35000 },
+      { city: 'Loma Pyta', afu: 25000, zoe: 30000, lucero: 35000, movil: null },
+      { city: 'Luque', afu: 30000, zoe: 30000, lucero: 35000, movil: 25000 },
+      { city: 'Mariano Roque Alonso', afu: 30000, zoe: 40000, lucero: 35000, movil: 30000 },
+      { city: 'Ñemby', afu: 30000, zoe: 30000, lucero: 40000, movil: 25000 },
+      { city: 'Remansito', afu: null, zoe: null, lucero: null, movil: 45000 },
+      { city: 'San Antonio', afu: 30000, zoe: 30000, lucero: 40000, movil: 30000 },
+      { city: 'San Lorenzo', afu: 25000, zoe: 30000, lucero: 30000, movil: 25000 },
+      { city: 'Villa Elisa', afu: 25000, zoe: 30000, lucero: 35000, movil: 20000 },
+      { city: 'Villeta', afu: null, zoe: 50000, lucero: 35000, movil: 40000 },
+      { city: 'Ypané', afu: 35000, zoe: null, lucero: 40000, movil: 30000 },
+      { city: 'Zeballos Cue', afu: 25000, zoe: 30000, lucero: null, movil: null },
+      { city: 'Altos (Cordillera)', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Atyrá', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Barrero', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Blas Garay', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Caacupé', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Caaguazú', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Cambyretá', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Campo 9', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Capitán Miranda', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Carapeguá', afu: null, zoe: null, lucero: 50000, movil: null },
+      { city: 'Carmen del Paraná', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Ciudad del Este', afu: null, zoe: null, lucero: 25000, movil: null },
+      { city: 'Colonia Torín', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Coronel Oviedo', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Dr. J. Eulogio Estigarribia', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Encarnación', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Eusebio Ayala', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Fram', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Hernandarias', afu: null, zoe: null, lucero: 30000, movil: null },
+      { city: 'Itacurubí', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'José Domingo Ocampos', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Juan E. O\'Leary', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Juan León Mallorquín', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Juan Manuel Frutos', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'La Paz', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Los Cedrales', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Mauricio José Troche', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Mbocajaty (Guairá)', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Minga Guazú', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Naranjal', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Natalicio Talavera', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Nueva Italia', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Paraguarí', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Pastoreo', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Pedro Juan Caballero', afu: null, zoe: null, lucero: 45000, movil: null },
+      { city: 'Piribebuy', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Presidente Franco', afu: null, zoe: null, lucero: 30000, movil: null },
+      { city: 'San Bernardino', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'San Cristóbal', afu: null, zoe: null, lucero: 45000, movil: null },
+      { city: 'San José de los Arroyos', afu: null, zoe: null, lucero: 50000, movil: null },
+      { city: 'San Juan Del Paraná', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Santa Rita', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Santa Rosa del Monday', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Tavapy', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Thompson', afu: null, zoe: null, lucero: 35000, movil: null },
+      { city: 'Tobatí', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Villa Hayes', afu: null, zoe: null, lucero: 50000, movil: null },
+      { city: 'Villarrica', afu: null, zoe: null, lucero: 45000, movil: null },
+      { city: 'Yaguarón', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Yataity (Guairá)', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Ypacaraí', afu: null, zoe: null, lucero: 40000, movil: null },
+      { city: 'Yguazú', afu: null, zoe: null, lucero: 40000, movil: null }
+    ];
+
+    const format = n => (n == null || n === Infinity) ? '—' : '₲ ' + n.toLocaleString('es-PY');
+
+    function normalize(text) {
+      return String(text).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function getCheapest(row) {
+      const prices = COMPANIES.map(c => ({ company: c, price: row[c.id] }))
+        .filter(p => p.price != null);
+      if (prices.length === 0) return { min: null, winners: [] };
+      const min = Math.min(...prices.map(p => p.price));
+      const winners = prices.filter(p => p.price === min);
+      return { min, winners };
+    }
+
+    function render(query = '') {
+      const q = normalize(query);
+      const filtered = RATES.filter(r => normalize(r.city).includes(q));
+
+      // Estadísticas
+      const wins = {};
+      COMPANIES.forEach(c => wins[c.id] = 0);
+      let globalMin = Infinity;
+      filtered.forEach(r => {
+        const { min, winners } = getCheapest(r);
+        if (min != null) {
+          if (min < globalMin) globalMin = min;
+          winners.forEach(w => wins[w.company.id]++);
+        }
+      });
+      const top = Object.entries(wins).sort((a, b) => b[1] - a[1])[0];
+      const topCompany = COMPANIES.find(c => c.id === top[0]);
+
+      document.getElementById('statCities').textContent = filtered.length;
+      document.getElementById('statTotal').textContent = `de ${RATES.length}`;
+      document.getElementById('statTopCompany').textContent = topCompany.name;
+      document.getElementById('statTopCount').textContent = `${top[1]} de ${filtered.length} ciudades`;
+      document.getElementById('statMinPrice').textContent = format(globalMin);
+
+      // Tabla (escritorio)
+      const tbody = document.getElementById('tableBody');
+      const rows = [];
+
+      filtered.forEach(r => {
+        const { min, winners } = getCheapest(r);
+        const winnerIds = winners.map(w => w.company.id);
+        const winnerNames = winners.map(w => w.company.name).join(' / ');
+
+        let cells = '';
+        COMPANIES.forEach(c => {
+          const isCheapest = winnerIds.includes(c.id);
+          cells += `
+            <td class="px-6 py-4 border-b border-slate-100 text-slate-700 ${isCheapest ? 'bg-green-50 font-bold text-green-700 border-b-2 border-green-200' : ''}">
+              ${format(r[c.id])}
+            </td>`;
+        });
+
+        const bestPriceHtml = min != null ? `
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-green-100 text-green-700 text-xs font-semibold border border-green-200">
+            ${format(min)}
+          </div>
+          <p class="mt-1 text-xs text-green-600 font-medium">${winnerNames}</p>` : `
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-100 text-slate-500 text-xs font-semibold border border-slate-300">
+            —
+          </div>
+          <p class="mt-1 text-xs text-slate-500 font-medium">Sin datos</p>`;
+
+        rows.push(`
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="px-6 py-4 border-b border-slate-100 text-slate-900 font-medium group-hover:text-indigo-600 transition-colors">${r.city}</td>
+            ${cells}
+            <td class="px-6 py-4 border-b border-slate-100">${bestPriceHtml}</td>
+          </tr>
+        `);
+      });
+
+      tbody.innerHTML = rows.join('') || '<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">Sin resultados</td></tr>';
+
+      // Tarjetas (móvil)
+      const mobile = document.getElementById('mobileView');
+      const cards = filtered.map(r => {
+        const { min, winners } = getCheapest(r);
+        const winnerIds = winners.map(w => w.company.id);
+        const winnerNames = winners.map(w => w.company.name).join(' / ');
+
+        let chips = '';
+        COMPANIES.forEach(c => {
+          const isCheapest = winnerIds.includes(c.id);
+          chips += `
+            <div class="flex items-center justify-between px-3 py-2 rounded-lg border ${isCheapest ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200'}">
+              <span class="text-sm font-medium text-slate-700">${c.name}</span>
+              <span class="text-sm ${isCheapest ? 'font-bold text-green-700' : 'text-slate-600'}">${format(r[c.id])}</span>
+            </div>`;
+        });
+
+        const bestHtml = min != null ? `
+            <p class="text-sm font-bold text-green-700">${winnerNames} — ${format(min)}</p>` : `
+            <p class="text-sm font-bold text-slate-400">Sin datos</p>`;
+
+        return `
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-lg font-bold text-slate-900">${r.city}</h3>
+              ${min != null ? `<span class="text-[10px] font-bold text-white uppercase bg-green-600 rounded px-2 py-0.5 tracking-tighter">Más barato</span>` : `<span class="text-[10px] font-bold text-white uppercase bg-slate-400 rounded px-2 py-0.5 tracking-tighter">Sin datos</span>`}
+            </div>
+            <div class="space-y-0">${chips}</div>
+            <div class="mt-4 pt-4 border-t border-slate-100">
+              <p class="text-xs text-slate-500 mb-1">Mejor opción:</p>
+              ${bestHtml}
+            </div>
+          </div>`;
+      }).join('');
+
+      mobile.innerHTML = cards || '<div class="text-center py-8 text-slate-500 text-sm">Sin resultados</div>';
+
+      // Mostrar / ocultar estados
+      const empty = document.getElementById('emptyState');
+      const hasResults = filtered.length > 0;
+      document.getElementById('desktopView').classList.toggle('hidden', !hasResults || window.innerWidth < 768);
+      document.getElementById('mobileView').classList.toggle('hidden', !hasResults || window.innerWidth >= 768);
+      empty.classList.toggle('hidden', hasResults);
+    }
+
+    document.getElementById('search').addEventListener('input', e => render(e.target.value));
+
+    window.addEventListener('resize', () => {
+      const q = document.getElementById('search').value;
+      render(q);
+    });
+
+    render();
+  </script>
+</body>
+</html>
