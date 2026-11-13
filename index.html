@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Compara tarifas de envío de encomiendas entre AFU, ZOE, Lucero del Este y Movil Express en las principales ciudades de Paraguay." />
+  <meta name="theme-color" content="#4f46e5" />
   <title>Comparador de Envíos PY — AFU, ZOE, Lucero del Este, Movil Express</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +21,7 @@
     <div class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-md shadow-indigo-200">📦</div>
+          <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-md shadow-indigo-200" aria-hidden="true">📦</div>
           <div>
             <h1 class="text-xl font-bold text-slate-900 tracking-tight">Comparador de Envíos PY</h1>
             <p class="text-xs text-slate-500">Tarifas de encomiendas entre las principales ciudades de Paraguay</p>
@@ -61,42 +63,49 @@
     <!-- Buscador -->
     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
       <div class="relative max-w-xl">
-        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
+        <label for="search" class="sr-only">Buscar ciudad</label>
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" aria-hidden="true">🔍</span>
         <input
           type="search"
           id="search"
           placeholder="Buscar ciudad (ej. Asunción, Ciudad del Este, Encarnación...)"
+          autocomplete="off"
+          aria-describedby="searchHelp"
           class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
         />
       </div>
-      <p class="text-xs text-slate-400 mt-3">Escribe para filtrar ciudades al instante. Funciona en celular y PC.</p>
+      <p id="searchHelp" class="text-xs text-slate-400 mt-3">Escribe para filtrar ciudades al instante. Funciona en celular y PC.</p>
     </div>
 
-    <!-- Vista escritorio: tabla -->
-    <div id="desktopView" class="hidden md:block overflow-x-auto">
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <table class="w-full text-sm text-left">
-          <thead class="bg-slate-50 border-b border-slate-200">
-            <tr>
-              <th class="px-6 py-4 font-semibold text-slate-600">Ciudad</th>
-              <th class="px-6 py-4 font-semibold text-slate-600">AFU</th>
-              <th class="px-6 py-4 font-semibold text-slate-600">ZOE</th>
-              <th class="px-6 py-4 font-semibold text-slate-600">Lucero del Este</th>
-              <th class="px-6 py-4 font-semibold text-slate-600">Movil Express</th>
-              <th class="px-6 py-4 font-semibold text-slate-600">Mejor opción</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
-        </table>
+    <!-- Resultados (tabla en escritorio / tarjetas en móvil) -->
+    <div id="results" class="space-y-0">
+      <!-- Vista escritorio: tabla -->
+      <div id="desktopView" class="hidden md:block overflow-x-auto">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-left">
+            <caption class="sr-only">Comparación de tarifas de envío por ciudad</caption>
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th scope="col" class="px-6 py-4 font-semibold text-slate-600">Ciudad</th>
+                <th scope="col" class="px-6 py-4 font-semibold text-slate-600">AFU</th>
+                <th scope="col" class="px-6 py-4 font-semibold text-slate-600">ZOE</th>
+                <th scope="col" class="px-6 py-4 font-semibold text-slate-600">Lucero del Este</th>
+                <th scope="col" class="px-6 py-4 font-semibold text-slate-600">Movil Express</th>
+                <th scope="col" class="px-6 py-4 font-semibold text-slate-600">Mejor opción</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <!-- Vista móvil: tarjetas -->
-    <div id="mobileView" class="block md:hidden grid gap-3"></div>
+      <!-- Vista móvil: tarjetas -->
+      <div id="mobileView" class="grid gap-3 md:hidden"></div>
+    </div>
 
     <!-- Estado vacío -->
     <div id="emptyState" class="hidden flex flex-col items-center justify-center py-16 text-center">
-      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-2xl mb-3">🔍</div>
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-2xl mb-3" aria-hidden="true">🔍</div>
       <h3 class="text-lg font-bold text-slate-900 mb-1">No se encontraron ciudades</h3>
       <p class="text-slate-500 text-sm">Intenta con otro nombre de ciudad.</p>
     </div>
@@ -200,14 +209,15 @@
       { city: 'Yguazú', afu: null, zoe: null, lucero: 40000, movil: null }
     ];
 
-    const format = n => (n == null || n === Infinity) ? '—' : '₲ ' + n.toLocaleString('es-PY');
+    const format = n => (n == null || !isFinite(n)) ? '—' : '₲ ' + n.toLocaleString('es-PY');
 
     function normalize(text) {
       return String(text).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
     function getCheapest(row) {
-      const prices = COMPANIES.map(c => ({ company: c, price: row[c.id] }))
+      const prices = COMPANIES
+        .map(c => ({ company: c, price: row[c.id] }))
         .filter(p => p.price != null);
       if (prices.length === 0) return { min: null, winners: [] };
       const min = Math.min(...prices.map(p => p.price));
@@ -217,26 +227,40 @@
 
     function render(query = '') {
       const q = normalize(query);
-      const filtered = RATES.filter(r => normalize(r.city).includes(q));
+      const filtered = RATES
+        .filter(r => normalize(r.city).includes(q))
+        .map(r => ({ ...r, cheapest: getCheapest(r) }));
 
       // Estadísticas
-      const wins = {};
-      COMPANIES.forEach(c => wins[c.id] = 0);
+      const wins = Object.fromEntries(COMPANIES.map(c => [c.id, 0]));
       let globalMin = Infinity;
+      let totalWins = 0;
+
       filtered.forEach(r => {
-        const { min, winners } = getCheapest(r);
+        const { min, winners } = r.cheapest;
         if (min != null) {
           if (min < globalMin) globalMin = min;
-          winners.forEach(w => wins[w.company.id]++);
+          winners.forEach(w => {
+            wins[w.company.id] += 1;
+            totalWins += 1;
+          });
         }
       });
-      const top = Object.entries(wins).sort((a, b) => b[1] - a[1])[0];
-      const topCompany = COMPANIES.find(c => c.id === top[0]);
+
+      const hasResults = filtered.length > 0;
+      let topCompanyName = '—';
+      let topCountText = hasResults ? 'Sin datos' : 'Sin resultados';
+
+      if (hasResults && totalWins > 0) {
+        const [topId, topCount] = Object.entries(wins).sort((a, b) => b[1] - a[1])[0];
+        topCompanyName = COMPANIES.find(c => c.id === topId).name;
+        topCountText = `${topCount} de ${filtered.length} ${filtered.length === 1 ? 'ciudad' : 'ciudades'}`;
+      }
 
       document.getElementById('statCities').textContent = filtered.length;
       document.getElementById('statTotal').textContent = `de ${RATES.length}`;
-      document.getElementById('statTopCompany').textContent = topCompany.name;
-      document.getElementById('statTopCount').textContent = `${top[1]} de ${filtered.length} ciudades`;
+      document.getElementById('statTopCompany').textContent = topCompanyName;
+      document.getElementById('statTopCount').textContent = topCountText;
       document.getElementById('statMinPrice').textContent = format(globalMin);
 
       // Tabla (escritorio)
@@ -244,7 +268,7 @@
       const rows = [];
 
       filtered.forEach(r => {
-        const { min, winners } = getCheapest(r);
+        const { min, winners } = r.cheapest;
         const winnerIds = winners.map(w => w.company.id);
         const winnerNames = winners.map(w => w.company.name).join(' / ');
 
@@ -269,7 +293,7 @@
 
         rows.push(`
           <tr class="hover:bg-slate-50 transition-colors">
-            <td class="px-6 py-4 border-b border-slate-100 text-slate-900 font-medium group-hover:text-indigo-600 transition-colors">${r.city}</td>
+            <th scope="row" class="px-6 py-4 border-b border-slate-100 text-slate-900 font-medium text-left">${r.city}</th>
             ${cells}
             <td class="px-6 py-4 border-b border-slate-100">${bestPriceHtml}</td>
           </tr>
@@ -281,7 +305,7 @@
       // Tarjetas (móvil)
       const mobile = document.getElementById('mobileView');
       const cards = filtered.map(r => {
-        const { min, winners } = getCheapest(r);
+        const { min, winners } = r.cheapest;
         const winnerIds = winners.map(w => w.company.id);
         const winnerNames = winners.map(w => w.company.name).join(' / ');
 
@@ -303,7 +327,9 @@
           <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
             <div class="flex justify-between items-start mb-3">
               <h3 class="text-lg font-bold text-slate-900">${r.city}</h3>
-              ${min != null ? `<span class="text-[10px] font-bold text-white uppercase bg-green-600 rounded px-2 py-0.5 tracking-tighter">Más barato</span>` : `<span class="text-[10px] font-bold text-white uppercase bg-slate-400 rounded px-2 py-0.5 tracking-tighter">Sin datos</span>`}
+              ${min != null
+                ? `<span class="text-[10px] font-bold text-white uppercase bg-green-600 rounded px-2 py-0.5 tracking-tighter">Más barato</span>`
+                : `<span class="text-[10px] font-bold text-white uppercase bg-slate-400 rounded px-2 py-0.5 tracking-tighter">Sin datos</span>`}
             </div>
             <div class="space-y-0">${chips}</div>
             <div class="mt-4 pt-4 border-t border-slate-100">
@@ -315,20 +341,13 @@
 
       mobile.innerHTML = cards || '<div class="text-center py-8 text-slate-500 text-sm">Sin resultados</div>';
 
-      // Mostrar / ocultar estados
-      const empty = document.getElementById('emptyState');
-      const hasResults = filtered.length > 0;
-      document.getElementById('desktopView').classList.toggle('hidden', !hasResults || window.innerWidth < 768);
-      document.getElementById('mobileView').classList.toggle('hidden', !hasResults || window.innerWidth >= 768);
-      empty.classList.toggle('hidden', hasResults);
+      // Mostrar / ocultar estados. La tabla vs. tarjetas se alterna por CSS (md:),
+      // así que redimensionar la ventana no requiere volver a renderizar.
+      document.getElementById('results').classList.toggle('hidden', !hasResults);
+      document.getElementById('emptyState').classList.toggle('hidden', hasResults);
     }
 
     document.getElementById('search').addEventListener('input', e => render(e.target.value));
-
-    window.addEventListener('resize', () => {
-      const q = document.getElementById('search').value;
-      render(q);
-    });
 
     render();
   </script>
