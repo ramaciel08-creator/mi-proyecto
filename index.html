@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Compara tarifas de envío de encomiendas entre AFU, ZOE, Lucero del Este y Movil Express en las principales ciudades de Paraguay." />
+  <meta name="description" content="Compara tarifas de envío de encomiendas entre AFU, ZOE, Lucero del Este, Movil Express y AEX en las principales ciudades de Paraguay." />
   <meta name="theme-color" content="#4f46e5" />
-  <title>Tarifa de Envíos — AFU, ZOE, Lucero del Este, Movil Express</title>
+  <title>Tarifa de Envíos — AFU, ZOE, Lucero del Este, Movil Express, AEX</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-600">
-          4 empresas &middot; precios en guaraníes (₲)
+          5 empresas &middot; precios en guaraníes (₲)
         </div>
       </div>
     </div>
@@ -55,8 +55,8 @@
       </div>
       <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Empresas comparadas</p>
-        <p class="text-2xl font-bold text-slate-800 mt-1">4</p>
-        <p class="text-xs text-slate-400 mt-1">AFU, ZOE, Lucero del Este, Movil Express</p>
+        <p class="text-2xl font-bold text-slate-800 mt-1">5</p>
+        <p class="text-xs text-slate-400 mt-1">AFU, ZOE, Lucero del Este, Movil Express, AEX</p>
       </div>
     </div>
 
@@ -91,6 +91,7 @@
                 <th scope="col" class="px-6 py-4 font-semibold text-slate-600">ZOE</th>
                 <th scope="col" class="px-6 py-4 font-semibold text-slate-600">Lucero del Este</th>
                 <th scope="col" class="px-6 py-4 font-semibold text-slate-600">Movil Express</th>
+                <th scope="col" class="px-6 py-4 font-semibold text-slate-600">AEX</th>
                 <th scope="col" class="px-6 py-4 font-semibold text-slate-600">Mejor opción</th>
               </tr>
             </thead>
@@ -127,86 +128,111 @@
       { id: 'afu', name: 'AFU' },
       { id: 'zoe', name: 'ZOE' },
       { id: 'lucero', name: 'Lucero del Este' },
-      { id: 'movil', name: 'Movil Express' }
+      { id: 'movil', name: 'Movil Express' },
+      { id: 'aex', name: 'AEX' }
     ];
 
     // Base de datos de precios en guaraníes (₲)
     // null = la empresa no opera en esa ciudad
     const RATES = [
-      { city: 'Areguá', afu: null, zoe: 40000, lucero: 40000, movil: 30000 },
-      { city: 'Asunción', afu: 20000, zoe: 30000, lucero: 30000, movil: 20000 },
-      { city: 'Capiatá', afu: 35000, zoe: 30000, lucero: 40000, movil: 30000 },
-      { city: 'Chaco\'i', afu: null, zoe: null, lucero: null, movil: 30000 },
-      { city: 'Fernando de la Mora', afu: 20000, zoe: 25000, lucero: 35000, movil: 20000 },
-      { city: 'Guarambaré', afu: null, zoe: 40000, lucero: 40000, movil: 35000 },
-      { city: 'Itá', afu: null, zoe: 50000, lucero: 40000, movil: 45000 },
-      { city: 'Itauguá', afu: null, zoe: 50000, lucero: 40000, movil: 40000 },
-      { city: 'J. Augusto Saldívar', afu: null, zoe: 40000, lucero: 40000, movil: 35000 },
-      { city: 'Lambaré', afu: 20000, zoe: 30000, lucero: 30000, movil: 25000 },
-      { city: 'Limpio', afu: 35000, zoe: 50000, lucero: 40000, movil: 35000 },
-      { city: 'Loma Pyta', afu: 25000, zoe: 30000, lucero: 35000, movil: null },
-      { city: 'Luque', afu: 30000, zoe: 30000, lucero: 35000, movil: 25000 },
-      { city: 'Mariano Roque Alonso', afu: 30000, zoe: 40000, lucero: 35000, movil: 30000 },
-      { city: 'Ñemby', afu: 30000, zoe: 30000, lucero: 40000, movil: 25000 },
-      { city: 'Remansito', afu: null, zoe: null, lucero: null, movil: 45000 },
-      { city: 'San Antonio', afu: 30000, zoe: 30000, lucero: 40000, movil: 30000 },
-      { city: 'San Lorenzo', afu: 25000, zoe: 30000, lucero: 30000, movil: 25000 },
-      { city: 'Villa Elisa', afu: 25000, zoe: 30000, lucero: 35000, movil: 20000 },
-      { city: 'Villeta', afu: null, zoe: 50000, lucero: 35000, movil: 40000 },
-      { city: 'Ypané', afu: 35000, zoe: null, lucero: 40000, movil: 30000 },
-      { city: 'Zeballos Cue', afu: 25000, zoe: 30000, lucero: null, movil: null },
-      { city: 'Altos (Cordillera)', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Atyrá', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Barrero', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Blas Garay', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Caacupé', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Caaguazú', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Cambyretá', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Campo 9', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Capitán Miranda', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Carapeguá', afu: null, zoe: null, lucero: 50000, movil: null },
-      { city: 'Carmen del Paraná', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Ciudad del Este', afu: null, zoe: null, lucero: 25000, movil: null },
-      { city: 'Colonia Torín', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Coronel Oviedo', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Dr. J. Eulogio Estigarribia', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Encarnación', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Eusebio Ayala', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Fram', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Hernandarias', afu: null, zoe: null, lucero: 30000, movil: null },
-      { city: 'Itacurubí', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'José Domingo Ocampos', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Juan E. O\'Leary', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Juan León Mallorquín', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Juan Manuel Frutos', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'La Paz', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Los Cedrales', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Mauricio José Troche', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Mbocajaty (Guairá)', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Minga Guazú', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Naranjal', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Natalicio Talavera', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Nueva Italia', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Paraguarí', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Pastoreo', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Pedro Juan Caballero', afu: null, zoe: null, lucero: 45000, movil: null },
-      { city: 'Piribebuy', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Presidente Franco', afu: null, zoe: null, lucero: 30000, movil: null },
-      { city: 'San Bernardino', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'San Cristóbal', afu: null, zoe: null, lucero: 45000, movil: null },
-      { city: 'San José de los Arroyos', afu: null, zoe: null, lucero: 50000, movil: null },
-      { city: 'San Juan Del Paraná', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Santa Rita', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Santa Rosa del Monday', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Tavapy', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Thompson', afu: null, zoe: null, lucero: 35000, movil: null },
-      { city: 'Tobatí', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Villa Hayes', afu: null, zoe: null, lucero: 50000, movil: null },
-      { city: 'Villarrica', afu: null, zoe: null, lucero: 45000, movil: null },
-      { city: 'Yaguarón', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Yataity (Guairá)', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Ypacaraí', afu: null, zoe: null, lucero: 40000, movil: null },
-      { city: 'Yguazú', afu: null, zoe: null, lucero: 40000, movil: null }
+      { city: 'Areguá', afu: null, zoe: 40000, lucero: 40000, movil: 30000, aex: 39000 },
+      { city: 'Asunción', afu: 20000, zoe: 30000, lucero: 30000, movil: 20000, aex: null },
+      { city: 'Capiatá', afu: 35000, zoe: 30000, lucero: 40000, movil: 30000, aex: 57000 },
+      { city: 'Chaco\'i', afu: null, zoe: null, lucero: null, movil: 30000, aex: null },
+      { city: 'Fernando de la Mora', afu: 20000, zoe: 25000, lucero: 35000, movil: 20000, aex: 39000 },
+      { city: 'Guarambaré', afu: null, zoe: 40000, lucero: 40000, movil: 35000, aex: 57000 },
+      { city: 'Itá', afu: null, zoe: 50000, lucero: 40000, movil: 45000, aex: 57000 },
+      { city: 'Itauguá', afu: null, zoe: 50000, lucero: 40000, movil: 40000, aex: 57000 },
+      { city: 'J. Augusto Saldívar', afu: null, zoe: 40000, lucero: 40000, movil: 35000, aex: 39000 },
+      { city: 'Lambaré', afu: 20000, zoe: 30000, lucero: 30000, movil: 25000, aex: 39000 },
+      { city: 'Limpio', afu: 35000, zoe: 50000, lucero: 40000, movil: 35000, aex: 39000 },
+      { city: 'Loma Pyta', afu: 25000, zoe: 30000, lucero: 35000, movil: null, aex: null },
+      { city: 'Luque', afu: 30000, zoe: 30000, lucero: 35000, movil: 25000, aex: 39000 },
+      { city: 'Mariano Roque Alonso', afu: 30000, zoe: 40000, lucero: 35000, movil: 30000, aex: 39000 },
+      { city: 'Ñemby', afu: 30000, zoe: 30000, lucero: 40000, movil: 25000, aex: 39000 },
+      { city: 'Remansito', afu: null, zoe: null, lucero: null, movil: 45000, aex: null },
+      { city: 'San Antonio', afu: 30000, zoe: 30000, lucero: 40000, movil: 30000, aex: 57000 },
+      { city: 'San Lorenzo', afu: 25000, zoe: 30000, lucero: 30000, movil: 25000, aex: 39000 },
+      { city: 'Villa Elisa', afu: 25000, zoe: 30000, lucero: 35000, movil: 20000, aex: 39000 },
+      { city: 'Villeta', afu: null, zoe: 50000, lucero: 35000, movil: 40000, aex: 57000 },
+      { city: 'Ypané', afu: 35000, zoe: null, lucero: 40000, movil: 30000, aex: 57000 },
+      { city: 'Zeballos Cue', afu: 25000, zoe: 30000, lucero: null, movil: null, aex: null },
+      { city: 'Altos (Cordillera)', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Atyrá', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Barrero', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Blas Garay', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Caacupé', afu: null, zoe: null, lucero: 40000, movil: null, aex: 40000 },
+      { city: 'Caaguazú', afu: null, zoe: null, lucero: 40000, movil: null, aex: 39000 },
+      { city: 'Cambyretá', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Campo 9', afu: null, zoe: null, lucero: 40000, movil: null, aex: 39000 },
+      { city: 'Capitán Miranda', afu: null, zoe: null, lucero: 40000, movil: null, aex: 75000 },
+      { city: 'Carapeguá', afu: null, zoe: null, lucero: 50000, movil: null, aex: 57000 },
+      { city: 'Carmen del Paraná', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Ciudad del Este', afu: null, zoe: null, lucero: 25000, movil: null, aex: 39000 },
+      { city: 'Colonia Torín', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Coronel Oviedo', afu: null, zoe: null, lucero: 40000, movil: null, aex: 39000 },
+      { city: 'Dr. J. Eulogio Estigarribia', afu: null, zoe: null, lucero: 40000, movil: null, aex: 39000 },
+      { city: 'Encarnación', afu: null, zoe: null, lucero: 40000, movil: null, aex: 39000 },
+      { city: 'Eusebio Ayala', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Fram', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Hernandarias', afu: null, zoe: null, lucero: 30000, movil: null, aex: 39000 },
+      { city: 'Itacurubí', afu: null, zoe: null, lucero: 40000, movil: null, aex: 76000 },
+      { city: 'José Domingo Ocampos', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Juan E. O\'Leary', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Juan León Mallorquín', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Juan Manuel Frutos', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'La Paz', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Los Cedrales', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Mauricio José Troche', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Mbocajaty (Guairá)', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Minga Guazú', afu: null, zoe: null, lucero: 40000, movil: null, aex: 39000 },
+      { city: 'Naranjal', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Natalicio Talavera', afu: null, zoe: null, lucero: 40000, movil: null, aex: 76000 },
+      { city: 'Nueva Italia', afu: null, zoe: null, lucero: 40000, movil: null, aex: 75000 },
+      { city: 'Paraguarí', afu: null, zoe: null, lucero: 40000, movil: null, aex: 76000 },
+      { city: 'Pastoreo', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Pedro Juan Caballero', afu: null, zoe: null, lucero: 45000, movil: null, aex: 44000 },
+      { city: 'Piribebuy', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Presidente Franco', afu: null, zoe: null, lucero: 30000, movil: null, aex: 39000 },
+      { city: 'San Bernardino', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'San Cristóbal', afu: null, zoe: null, lucero: 45000, movil: null, aex: 75000 },
+      { city: 'San José de los Arroyos', afu: null, zoe: null, lucero: 50000, movil: null, aex: 75000 },
+      { city: 'San Juan Del Paraná', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Santa Rita', afu: null, zoe: null, lucero: 40000, movil: null, aex: 39000 },
+      { city: 'Santa Rosa del Monday', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Tavapy', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Thompson', afu: null, zoe: null, lucero: 35000, movil: null, aex: null },
+      { city: 'Tobatí', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Villa Hayes', afu: null, zoe: null, lucero: 50000, movil: null, aex: 57000 },
+      { city: 'Villarrica', afu: null, zoe: null, lucero: 45000, movil: null, aex: null },
+      { city: 'Yaguarón', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Yataity (Guairá)', afu: null, zoe: null, lucero: 40000, movil: null, aex: 76000 },
+      { city: 'Ypacaraí', afu: null, zoe: null, lucero: 40000, movil: null, aex: 57000 },
+      { city: 'Yguazú', afu: null, zoe: null, lucero: 40000, movil: null, aex: null },
+      { city: 'Hohenau', afu: null, zoe: null, lucero: null, movil: null, aex: 57000 },
+      { city: 'General Artigas', afu: null, zoe: null, lucero: null, movil: null, aex: 75000 },
+      { city: 'Obligado', afu: null, zoe: null, lucero: null, movil: null, aex: 57000 },
+      { city: 'Nueva Londres', afu: null, zoe: null, lucero: null, movil: null, aex: 75000 },
+      { city: 'Yhú', afu: null, zoe: null, lucero: null, movil: null, aex: 75000 },
+      { city: 'Salto del Guairá', afu: null, zoe: null, lucero: null, movil: null, aex: 57000 },
+      { city: 'Concepción', afu: null, zoe: null, lucero: null, movil: null, aex: 57000 },
+      { city: 'Horqueta', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Yby Yaú', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: '1ro. de Marzo', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Caraguatay', afu: null, zoe: null, lucero: null, movil: null, aex: 57000 },
+      { city: 'Emboscada', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Isla Pucú', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'San José Obrero', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Paso Yobái', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Pilar', afu: null, zoe: null, lucero: null, movil: null, aex: 57000 },
+      { city: 'Pirayú', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Quiindy', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'San Roque González', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Ybytymí', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Benjamín Aceval', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'General Elizardo Aquino', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Guayaybí', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
+      { city: 'Santaní', afu: null, zoe: null, lucero: null, movil: null, aex: 76000 },
     ];
 
     const format = n => (n == null || !isFinite(n)) ? '—' : '₲ ' + n.toLocaleString('es-PY');
@@ -300,7 +326,7 @@
         `);
       });
 
-      tbody.innerHTML = rows.join('') || '<tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">Sin resultados</td></tr>';
+      tbody.innerHTML = rows.join('') || '<tr><td colspan="7" class="px-6 py-8 text-center text-slate-500">Sin resultados</td></tr>';
 
       // Tarjetas (móvil)
       const mobile = document.getElementById('mobileView');
